@@ -1,6 +1,0 @@
-#!/bin/sh
-#
-# wrapper script for vpncmd, the configuration binary for
-# SoftEther VPN
-#
-/usr/libexec/softether4/vpncmd ${1+"$@"}
