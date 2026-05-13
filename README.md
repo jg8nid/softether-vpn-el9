@@ -40,15 +40,7 @@ This ensures **SoftEther4 and SoftEther5 can coexist**.
 
 ---
 
-## 🔧 How to Build (mock recommended)
-
-### Build using mock (cleanest method)
-
-```sh
-mock -r alma+epel-9-x86_64 --rebuild softether4-*.src.rpm
-```
-
-### Build using rpmbuild
+## 🔧 How to Build
 
 ```sh
 rpmbuild --rebuild softether4-*.src.rpm
