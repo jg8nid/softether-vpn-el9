@@ -1,0 +1,12 @@
+# Copyright (c) 2026, Mitsuyasu Ichimura <mitsu@vsict.com> (https://github.com/jg8nid)
+# SPDX-License-Identifier: Apache-2.0
+--- softether-vpn_4.44.9807.orig/src/Cedar/VLanUnix.h
++++ softether-vpn_4.44.9807/src/Cedar/VLanUnix.h
+@@ -121,6 +121,7 @@ struct VLAN
+ // Function prototype
+ VLAN *NewVLan(char *instance_name, VLAN_PARAM *param);
+ VLAN *NewTap(char *name, char *mac_address);
++void FreeTap(VLAN *v);
+ void FreeVLan(VLAN *v);
+ CANCEL *VLanGetCancel(VLAN *v);
+ bool VLanGetNextPacket(VLAN *v, void **buf, UINT *size);

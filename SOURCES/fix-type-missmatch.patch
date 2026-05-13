@@ -1,0 +1,112 @@
+# Copyright (c) 2026, Mitsuyasu Ichimura <mitsu@vsict.com> (https://github.com/jg8nid)
+# SPDX-License-Identifier: Apache-2.0
+--- softether_4.44.9807.orig/src/Mayaqua/Secure.h
++++ softether_4.44.9807/src/Mayaqua/Secure.h
+@@ -157,8 +157,8 @@ struct SECURE
+ 	UINT Error;								// The error that last occurred
+ 	struct CK_FUNCTION_LIST *Api;			// API
+ 	bool Initialized;						// Initialization flag
+-	UINT NumSlot;							// The number of slots
+-	UINT *SlotIdList;						// Slot ID list
++	unsigned long NumSlot;					// The number of slots
++	unsigned long *SlotIdList;				// Slot ID list
+ 	bool SessionCreated;					// Session creation flags
+ 	UINT SessionId;							// Session ID
+ 	UINT SessionSlotNumber;					// Slot ID of the session
+@@ -247,7 +247,7 @@ X *ReadSecCertFromObject(SECURE *sec, SE
+ X *ReadSecCert(SECURE *sec, char *name);
+ bool WriteSecKey(SECURE *sec, bool private_obj, char *name, K *k);
+ bool DeleteSecKey(SECURE *sec, char *name);
+-bool SignSecByObject(SECURE *sec, SEC_OBJ *obj, void *dst, void *src, UINT size);
++bool SignSecByObject(SECURE *sec, SEC_OBJ *obj, void *dst, void *src, unsigned long size);
+ bool SignSec(SECURE *sec, char *name, void *dst, void *src, UINT size);
+ bool ChangePin(SECURE *sec, char *old_pin, char *new_pin);
+ void TestSec();
+--- softether_4.44.9807.orig/src/Mayaqua/Secure.c
++++ softether_4.44.9807/src/Mayaqua/Secure.c
+@@ -370,7 +370,7 @@ bool SignSec(SECURE *sec, char *name, vo
+ }
+ 
+ // Sign with the private key of the secure device
+-bool SignSecByObject(SECURE *sec, SEC_OBJ *obj, void *dst, void *src, UINT size)
++bool SignSecByObject(SECURE *sec, SEC_OBJ *obj, void *dst, void *src, unsigned long size)
+ {
+ 	CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL, 0};
+ 	UINT ret;
+@@ -474,7 +474,7 @@ bool WriteSecKey(SECURE *sec, bool priva
+ 	UINT key_type = CKK_RSA;
+ 	CK_BBOOL b_true = true, b_false = false, b_private_obj = private_obj;
+ 	UINT obj_class = CKO_PRIVATE_KEY;
+-	UINT object;
++	unsigned long object;
+ 	UINT ret;
+ 	BUF *b;
+ 	RSA *rsa;
+@@ -716,7 +716,7 @@ bool WriteSecCert(SECURE *sec, bool priv
+ 	UCHAR value[4096];
+ 	UINT ret;
+ 	BUF *b;
+-	UINT object;
++	unsigned long object;
+ 	CK_ATTRIBUTE a[] =
+ 	{
+ 		{CKA_SUBJECT,			subject,		0},			// 0
+@@ -1264,7 +1264,7 @@ LIST *CloneEnumSecObject(LIST *o)
+ LIST *EnumSecObject(SECURE *sec)
+ {
+ 	CK_BBOOL b_true = true, b_false = false;
+-	UINT objects[MAX_OBJ];
++	unsigned long objects[MAX_OBJ];
+ 	UINT i;
+ 	UINT ret;
+ 	LIST *o;
+@@ -1273,7 +1273,7 @@ LIST *EnumSecObject(SECURE *sec)
+ 	{
+ 		{CKA_TOKEN,		&b_true,		sizeof(b_true)},
+ 	};
+-	UINT num_objects = MAX_OBJ;
++	unsigned long num_objects = MAX_OBJ;
+ 	// Validate arguments
+ 	if (sec == NULL)
+ 	{
+@@ -1389,7 +1389,7 @@ bool WriteSecData(SECURE *sec, bool priv
+ {
+ 	UINT object_class = CKO_DATA;
+ 	CK_BBOOL b_true = true, b_false = false, b_private_obj = private_obj;
+-	UINT object;
++	unsigned long object;
+ 	CK_ATTRIBUTE a[] =
+ 	{
+ 		{CKA_TOKEN,		&b_true,		sizeof(b_true)},
+@@ -1713,7 +1713,7 @@ void CloseSecSession(SECURE *sec)
+ bool OpenSecSession(SECURE *sec, UINT slot_number)
+ {
+ 	UINT err = 0;
+-	UINT session;
++	unsigned long session;
+ 	// Validate arguments
+ 	if (sec == NULL)
+ 	{
+@@ -1835,7 +1835,7 @@ SECURE *OpenSec(UINT id)
+ 		return NULL;
+ 	}
+ 
+-	sec->SlotIdList = (UINT *)ZeroMalloc(sizeof(UINT) * sec->NumSlot);
++	sec->SlotIdList = (unsigned long *)ZeroMalloc(sizeof(unsigned long) * sec->NumSlot);
+ 
+ 	if (sec->Api->C_GetSlotList(TRUE, sec->SlotIdList, &sec->NumSlot) != CKR_OK)
+ 	{
+--- softether_4.44.9807.orig/src/Mayaqua/Unix.c
++++ softether_4.44.9807/src/Mayaqua/Unix.c
+@@ -309,9 +309,9 @@ OS_DISPATCH_TABLE *UnixGetDispatchTable(
+ 	return &t;
+ }
+ 
+-static void *signal_received_for_ignore(int sig, siginfo_t *info, void *ucontext) 
++static void signal_received_for_ignore(int sig, siginfo_t *info, void *ucontext) 
+ {
+-	return NULL;
++	return;
+ }
+ 
+ // Ignore the signal flew to the thread
