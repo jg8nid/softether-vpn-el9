@@ -6,7 +6,7 @@ Summary:		SoftEther VPN Server, Client and Command-line tools
 
 License:		ASL 2.0
 URL:			https://www.softether.org/
-Source0:		SoftEtherVPN_Stable-4.44-9807-rtm.tar.gz
+Source0:		https://codeload.github.com/SoftEtherVPN/SoftEtherVPN_Stable/tar.gz/refs/tags/v4.44-9807-rtm?filename=SoftEtherVPN_Stable-4.44-9807-rtm.tar.gz
 Source1:		softether4-vpnbridge.service
 Source2:		softether4-vpnclient.service
 Source3:		softether4-vpnserver.service
@@ -30,9 +30,9 @@ BuildRequires:	ncurses-devel
 BuildRequires:	systemd
 BuildRequires:	systemd-rpm-macros
 
-Requires(post):   systemd
-Requires(preun):  systemd
-Requires(postun): systemd
+Requires(post):		systemd
+Requires(preun):	systemd
+Requires(postun):	systemd
 
 %description
 SoftEther VPN ("SoftEther" means "Software Ethernet") is a powerful,
@@ -123,5 +123,5 @@ install -m 0644 %{SOURCE5} %{buildroot}%{_mandir}/man1/
 %{_unitdir}/softether4-vpnserver.service
 
 %changelog
-* Tue May 12 2026 Mitsu <mitsu@vsict.com> - %{version}-1
+* Tue May 12 2026 Mitsu <mitsu@vsict.com> - 4.44.9807-1
 - Initial EL9 package

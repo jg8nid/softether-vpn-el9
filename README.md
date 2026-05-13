@@ -43,7 +43,7 @@ This ensures **SoftEther4 and SoftEther5 can coexist**.
 ## 🔧 How to Build
 
 ```sh
-rpmbuild --rebuild softether4-*.src.rpm
+rpmbuild -bb softether4-*.src.rpm
 ```
 
 ## 📜 License
